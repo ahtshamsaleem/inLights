@@ -1,10 +1,11 @@
 'use client'
 
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { InstagramAccessContext } from './layout';
 
 export default function HomePage() {
-  const [accessToken, setAccessToken] = useState(null);
-  const [profile, setProfile] = useState(null);
+
+  const instagramAccessContext = useContext(InstagramAccessContext); 
 
   const clientId = process.env.INSTAGRAM_CLIENT_ID;
   const redirectUri = process.env.INSTAGRAM_REDIRECT_URI;
@@ -16,46 +17,36 @@ const redirectToInstagramAuth = () => {
 };
 
   // Fetch the access token and profile info
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get('code');
+  // useEffect(() => {
+  //   const urlParams = new URLSearchParams(window.location.search);
+  //   const code = urlParams.get('code');
 
-    if (code) {
-      // Exchange the code for an access token
-      fetch(`/api/instagram/exchange-token?code=${code}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setAccessToken(data.access_token);
-        })
-        .catch((error) => {
-          console.error('Error fetching access token:', error);
-        });
-    }
-  }, []);
+  //   if (code) {
+  //     // Exchange the code for an access token
+  //     fetch(`/api/instagram-exchange-token?code=${code}`)
+  //       .then((res) => res.json())
+  //       .then((data) => {
+  //         setAccessToken(data.access_token);
+  //       })
+  //       .catch((error) => {
+  //         console.error('Error fetching access token:', error);
+  //       });
+  //   }
+  // }, []);
 
-  useEffect(() => {
-    if (accessToken) {
-      // Fetch the user profile data using the access token
-      fetch(`https://graph.instagram.com/me?fields=id,username,account_type&access_token=${accessToken}`)
-        .then((response) => response.json())
-        .then((data) => {
-          setProfile(data);
-        })
-        .catch((error) => {
-          console.error('Error fetching user profile:', error);
-        });
-    }
-  }, [accessToken]);
+
+
+
 
   return (
     <div>
       <h1>Instagram Login</h1>
-      {!accessToken ? (
+      {!instagramAccessContext.accessToken ? (
         <button onClick={redirectToInstagramAuth}>Login with Instagram</button>
       ) : profile ? (
         <div>
-          <h2>Welcome, {profile.username}</h2>
-          <p>Account Type: {profile.account_type}</p>
+          <h2>Welcome, {instagramAccessContext.profile.username}</h2>
+          <p>Account Type: {instagramAccessContext.profile.account_type}</p>
         </div>
       ) : (
         <p>Loading profile...</p>
