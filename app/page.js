@@ -43,7 +43,7 @@ const redirectToInstagramAuth = () => {
       <h1>Instagram Login</h1>
       {!instagramAccessContext.accessToken ? (
         <button onClick={redirectToInstagramAuth}>Login with Instagram</button>
-      ) : profile ? (
+      ) : instagramAccessContext.profile ? (
         <div>
           <h2>Welcome, {instagramAccessContext.profile.username}</h2>
           <p>Account Type: {instagramAccessContext.profile.account_type}</p>
