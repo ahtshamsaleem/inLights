@@ -67,12 +67,12 @@ const redirectToInstagramAuth = () => {
     <html lang="en">
       
 
-      <body className="w-full    font-Inter bg-gradient-to-bl from-[#ffe4e6]  to-[#ccfbf1] "
+      <body className="w-full  min-h-[100vh]  font-Inter bg-gradient-to-bl from-[#ffe4e6]  to-[#ccfbf1] "
         
         >
           <InstagramAccessContext.Provider value={{accessToken, setAccessToken, profile, setProfile}}>
           <div className="py-32 ">
-            <header className="w-full fixed flex justify-between items-center gap-5  h-32 px-16 py-8 bg-teal-400 left-0 top-0 z-[9999]">
+            <header className="w-full  fixed flex justify-between items-center gap-5  h-32 px-16 py-8 bg-teal-400 left-0 top-0 z-[9999]">
             {
               profile ? <div className="w-full flex flex-col justify-center items-center gap-2"> <h2 className="font-poppins text-xl text-white ">Welcome, {profile.username}</h2> <p className="text-sm text-gray-100  ">Account Type: {profile.account_type}</p> </div> : <div className="w-full flex justify-center items-center"><IgBtn text={"Login with Instagram"} onClick={redirectToInstagramAuth} /></div>
             }
