@@ -9,7 +9,7 @@ import { replaceItems } from '@/lib/replaceItems';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import Login from '@/components/Auth/Login';
-import { message } from 'antd';
+
 
 const Page = (props) => {
     const [email, setEmail] = useState('');

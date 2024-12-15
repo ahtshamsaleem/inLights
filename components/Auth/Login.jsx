@@ -1,6 +1,6 @@
 
 import Link from 'next/link'
-import { ThreeDots } from 'react-loader-spinner'
+
 
 
 
@@ -33,14 +33,7 @@ const Login = ({onSubmitHandler, onChangeHandler, name, email, pass, inValid, er
     justifyContent: 'center',
     alignItems: 'center'
   }} className="text-white bg-blue-700 hover:bg-blue-800  font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-   {isLoading ? <ThreeDots visible={isLoading}
-  height="40"
-  width="40"
-  color="#fff"
-  radius="9"
-  ariaLabel="three-dots-loading"
-  wrapperStyle={{}}
-  wrapperClass=""/> : 'Login'}  </button> <p className='mt-2'> <Link href={'/sign-up'}>Go to Sign up page</Link></p>
+   {isLoading ? "Loading...!!" : 'Login'}  </button> <p className='mt-2'> <Link href={'/sign-up'}>Go to Sign up page</Link></p>
   {error && <h3  className="text-red-500 p-3 align-middle text-center">{error.response ? error.response.data.message : error.message}</h3>}
 </form>
    </>
