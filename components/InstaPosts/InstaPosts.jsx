@@ -4,6 +4,7 @@ import axios from "axios";
 import { useSearchParams } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 
+import { useRouter } from 'next/navigation'
 
 import { InstagramAccessContext } from "@/app/layout";
 
@@ -18,6 +19,7 @@ export default function InstaPosts() {
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  const router = useRouter()
 
   const getMediaObjectHandler = async (token, user_id) => {
     try {
@@ -78,6 +80,8 @@ export default function InstaPosts() {
 
         localStorage.setItem("access_token", res.data.access_token);
         localStorage.setItem("user_id", res.data.user_id);
+
+        router.push('/ig-posts');
       }
     })();
   }, []);
