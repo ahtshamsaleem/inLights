@@ -69,7 +69,7 @@ export default function InstaPosts() {
 
       if (res.status === 200) {
         instagramAccessContext.setAccessToken(res.data.access_token);
-        setUserId(res.data.user_id);
+        //setUserId(res.data.user_id);
         const result = await getMediaObjectHandler(
           res.data.access_token,
           res.data.user_id
