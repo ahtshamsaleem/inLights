@@ -30,10 +30,15 @@ export async function GET(request) {
   form.append('redirect_uri', redirectUri);
   form.append('code', code);
 
+  console.log('Before api req/..')
 
   try {
     // Make a request to Instagram's API to exchange the authorization code for an access token
-    const response = await axios.post('https://api.instagram.com/oauth/access_token', form);
+    const response = await axios.post('https://api.instagram.com/oauth/access_token', form, {
+      headers: {
+        'Content-Type': 'multipart/form-data',  
+      },
+    });
 
     console.log(response)
     // Extract access token from the response
