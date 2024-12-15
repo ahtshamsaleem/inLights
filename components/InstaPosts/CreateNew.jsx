@@ -1,9 +1,10 @@
 'use client';
 
-import { InstagramAccessContext } from '@/app/layout';
+
 import axios from 'axios';
 import { useState, useRef, useEffect, useContext } from 'react';
 import { useRouter } from 'next/navigation'
+import { InstagramAccessContext } from '@/app/(protected)/layout';
 
 
 export default function CreateNew() {

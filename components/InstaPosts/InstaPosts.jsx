@@ -5,8 +5,9 @@ import { useSearchParams } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 
 import { useRouter } from 'next/navigation'
+import { InstagramAccessContext } from "@/app/(protected)/layout";
 
-import { InstagramAccessContext } from "@/app/layout";
+
 
 
 export default function InstaPosts() {

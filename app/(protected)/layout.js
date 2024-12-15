@@ -2,7 +2,7 @@
 
 
 import { createContext, useEffect, useState } from "react";
-import "./globals.css";
+import '@/app/globals.css'
 import axios from "axios";
 import IgBtn from "@/components/shared/IgBtn";
 import { usePathname } from 'next/navigation'
