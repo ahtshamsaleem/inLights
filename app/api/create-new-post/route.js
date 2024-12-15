@@ -11,16 +11,6 @@ export async function POST(request) {
   const accessToken = searchParams.get('access_token');
   const caption = searchParams.get('caption');
 
-  // ⚠️ The below code is for App Router Route Handlers only
- 
-
-  // return NextResponse.json(blob);
-  
-
-
-
-
-
 
 
     try {
@@ -43,7 +33,7 @@ export async function POST(request) {
 
 
 
-  const response2 = await axios.post(`https://graph.instagram.com/v21.0/${userId}/media_publish`, {"creation_id": containerId, "access_token": accessToken, "caption": caption}, {
+  const response2 = await axios.post(`https://graph.instagram.com/v21.0/${userId}/media_publish`, {"creation_id": containerId, "access_token": accessToken}, {
     headers: {
       "Content-Type": "application/json"
     }
