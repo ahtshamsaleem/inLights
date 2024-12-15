@@ -47,7 +47,7 @@ export default function CreateNew() {
               setIsLoading(true)
 
 
-            const response = await axios.post( `/api/create-new-post?filename=${file.name}&user_id=${instagramAccessContext.profile.id}&access_token=${instagramAccessContext.accessToken}$caption=${caption}`, file);
+            const response = await axios.post( `/api/create-new-post?filename=${file.name}&user_id=${instagramAccessContext.profile.id}&access_token=${instagramAccessContext.accessToken}&caption=${caption}`, file);
 
 
             if (response.status === 201) {
