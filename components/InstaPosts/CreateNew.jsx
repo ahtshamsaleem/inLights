@@ -3,11 +3,13 @@
 import { InstagramAccessContext } from '@/app/layout';
 import axios from 'axios';
 import { useState, useRef, useEffect, useContext } from 'react';
+import { useRouter } from 'next/navigation'
+
 
 export default function CreateNew() {
 
     const instagramAccessContext = useContext(InstagramAccessContext); 
-
+  const router = useRouter()
 
   const inputFileRef = useRef(null);
   const captionRef = useRef(null);
@@ -36,10 +38,11 @@ export default function CreateNew() {
           onSubmit={async (event) => {
             event.preventDefault();
 
+            console.log(captionRef?.current.value)
             
             const file = inputFileRef?.current?.files?.[0];
-            const caption = captionRef?.current?.target.value;
-            
+            const caption = captionRef?.current?.value;
+
             
             setIsLoading(true)
             const response = await axios.post( `/api/create-new-post?filename=${file.name}&user_id=${instagramAccessContext.profile.id}&access_token=${instagramAccessContext.accessToken}$caption=${caption}`, file);
@@ -49,6 +52,9 @@ export default function CreateNew() {
 
               setMediaId(response.data.mediaId);
               setIsLoading(false)
+
+              router.push('/ig-posts');
+
             }
             
           }}
@@ -57,9 +63,9 @@ export default function CreateNew() {
 
           <div className='flex justify-center items-center gap-3 '>
           <label className='text-md font-poppins '>Caption:</label>
-          <input className='w-full bg-gray-100 placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 focus:bg-white hover:border-slate-300 shadow-sm focus:shadow ' name="caption" ref={captionRef} type="text" />
+          <input className='w-full bg-gray-100 placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 focus:bg-white hover:border-slate-300 shadow-sm focus:shadow' name="caption" ref={captionRef} type="text" />
           </div>
-          <button className='px-4 py-2 bg-green-500 text-white rounded-md shadow-md  ' type="submit">POST</button>
+          <button className='px-4 py-2 bg-green-500 text-white rounded-md shadow-md  ' type="submit">{isLoading ? 'Posting....!!' : 'POST'}</button>
         </form> 
 
             {

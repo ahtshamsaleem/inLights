@@ -79,11 +79,11 @@ const redirectToInstagramAuth = () => {
 
               <div>
                 {
-                  pathname === '/ig-posts' && <Link href={'/ig-posts/create-new-post'}><button className="px-4 text-white text-nowrap rounded-md shadow-md hover:bg-orange-400 transition-all  py-2 bg-orange-300">Add New Post</button></Link>
+                  (pathname === '/ig-posts' || pathname === '/')  && <Link href={'/ig-posts/create-new-post'}><button className="px-4 text-white text-nowrap rounded-md shadow-md hover:bg-orange-400 transition-all  py-2 bg-orange-300">Add New Post</button></Link>
                 }
 
                 {
-                  pathname === '/ig-posts/create-new-post' &&<Link href={'/ig-posts'}><button className="px-4 text-white text-nowrap rounded-md shadow-md hover:bg-orange-400 transition-all  py-2 bg-orange-300">My Posts</button></Link>
+                  (pathname === '/ig-posts/create-new-post' || pathname === '/') &&<Link href={'/ig-posts'}><button className="px-4 text-white text-nowrap rounded-md shadow-md hover:bg-orange-400 transition-all  py-2 bg-orange-300">My Posts</button></Link>
                 }
                 
               </div>
