@@ -9,8 +9,7 @@ export async function GET(request) {
   const code = searchParams.get('code')
 
 
-  // const { searchParams } = new URL(request.url);
-  // const code = searchParams.get('code'); 
+
 
   if (!code) {
     return new Response('Authorization code is missing', { status: 400 });

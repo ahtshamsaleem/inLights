@@ -11,6 +11,16 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      fontFamily: {
+        poppins: ["Poppins", "sans-serif"],
+        oswald: ["Oswald", "sans-serif"],
+        Inter: ["Inter", "sans-serif"],
+        Roboto: ["Roboto", "sans-serif"],
+        Sixtyfour: ["Sixtyfour", "sans-serif"],
+        Montserrat: ["Montserrat", "sans-serif"],
+        Mulish: ["Mulish", "sans-serif"],
+        
+      }
     },
   },
   plugins: [],

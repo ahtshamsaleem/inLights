@@ -1,135 +1,116 @@
-'use client'
+"use client";
 
-import axios from 'axios';
-import { useSearchParams } from 'next/navigation';
-import React, { useContext, useEffect, useState } from 'react';
+import axios from "axios";
+import { useSearchParams } from "next/navigation";
+import React, { useContext, useEffect, useState } from "react";
 
-import Image from 'next/image';
-import { InstagramAccessContext } from '@/app/layout';
+
+import { InstagramAccessContext } from "@/app/layout";
+
 
 export default function InstaPosts() {
 
+  const searchParams = useSearchParams();
+  const code = searchParams.get("code");
 
-    const searchParams = useSearchParams()
+  const instagramAccessContext = useContext(InstagramAccessContext);
 
-    const code = searchParams.get('code')
-
-    const instagramAccessContext = useContext(InstagramAccessContext); 
-
-    //const [userId, setUserId] = useState(null)
-    const [mediaObjects, setMediaObjects] = useState([])
-
-    const [posts, setPosts] = useState([])
-
-    
-    const getMediaObjectHandler =  async(token, user_id) => {
-
-        const url = `https://graph.instagram.com/v21.0/${user_id}/media?access_token=${token}`
-        const res = await axios.get(url);
-        console.log(res)
-        return res?.data?.data;
-
-      }
+  const [posts, setPosts] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
 
-    useEffect(() => {
-        
-        if(!code) {
-            return;
+  const getMediaObjectHandler = async (token, user_id) => {
+    try {
+      setIsLoading(true);
+
+      const url = `https://graph.instagram.com/v21.0/${user_id}/media?access_token=${token}`;
+      const res = await axios.get(url);
+      console.log(res);
+      const mediaObjects = res?.data?.data;
+
+      const requests = mediaObjects.map((el) => {
+        return axios.get(
+          `https://graph.instagram.com/v21.0/${el.id}?fields=id,media_type,media_url,owner,timestamp,caption&access_token=${instagramAccessContext.accessToken}`
+        );
+      });
+
+      const responses = await Promise.all(requests);
+
+      const posts = responses.map((el) => {
+        return el.data;
+      });
+      setPosts(posts);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+
+
+  useEffect(() => {
+    if (!code) {
+      (async () => {
+        const accessToken = localStorage.getItem("access_token");
+        const userId = localStorage.getItem("user_id");
+
+        if (!accessToken || !userId) {
+          return;
+        } else {
+          await getMediaObjectHandler(accessToken, userId);
         }
+      })();
+      return;
+    }
 
-        const getAccessToken = (async () => {
+    const getAccessToken = (async () => {
+      const res = await axios.get(`/api/instagram-exchange-token?code=${code}`);
 
-            const res = await axios.get(`/api/instagram-exchange-token?code=${code}`);
+      if (res.status === 200) {
+        instagramAccessContext.setAccessToken(res.data.access_token);
+        setUserId(res.data.user_id);
+        const result = await getMediaObjectHandler(
+          res.data.access_token,
+          res.data.user_id
+        );
 
-            if(res.status === 200) {
-                instagramAccessContext.setAccessToken(res.data.access_token);
-                setUserId(res.data.user_id);
-                const result = await getMediaObjectHandler(res.data.access_token, res.data.user_id)
-                setMediaObjects(result)
-            }
-
-        })()
-
-      }, []);
-
-
-
-
-
-
-
-      const getPostsHandler =  async() => {
-
-        const result = await getMediaObjectHandler('IGAAGHNZC5Xz3BBZAE8wc0N2NmFoNWMxQjlWT0E4RmhzVF9OcllPa3pTNGFudS1xdDNVdUxyaENJazJybmZAaaXFjMkQ1LVUxMzFpZAS1qamRPcVI0TGw0ZAmF3d3VBYU1SSEJPSGNwT0JBWEdIa1dZAenNRU05LcGVxV1dsTjlTZAUx1SQZDZD', '9574343002580524')
-                setMediaObjects(result)
-
-
-        const requests = mediaObjects.map((el) => {
-            return axios.get(`https://graph.instagram.com/v21.0/${el.id}?fields=id,media_type,media_url,owner,timestamp&access_token=${instagramAccessContext.accessToken}`)
-        })
-
-        const responses = await Promise.all(requests);
-        console.log(responses)
-        const posts = responses.map((el) => {
-            return el.data;
-        })
-        setPosts(posts)
-
-        
+        localStorage.setItem("access_token", res.data.access_token);
+        localStorage.setItem("user_id", res.data.user_id);
       }
+    })();
+  }, []);
 
 
 
-      
+  return (
+    <div className="w-full container mx-auto    px-40 py-8 flex flex-col  justify-center items-center gap-3 ">
 
 
+      {isLoading ? (
+        <h2>Loading</h2>
+      ) : (
+        <ul className="p-8 w-full grid grid-cols-3 max-xl:grid-cols-2 gap-8  ">
+          {posts.map((el) => {
+            console.log(el);
+            return (
+              <li
+                key={el.id}
+                className="pb-4   flex flex-col justify-center items-center gap-8 border rounded-xl overflow-hidden shadow"
+              >
+                <div className="  ">
+                  <img
+                    src={el.media_url}
+                    className="aspect-square object-cover  max-w-full  shadow-md shadow-black/20 cursor-pointer   scale-100 hover:scale-110 transition-all duration-500 "
+                  />
+                </div>
 
-      
-      return (
-
-        <div>
-                <button onClick={getPostsHandler}>Get My Posts</button>
-
-
-                <ul className='p-8 w-full grid grid-cols-2 gap-8 bg-gray-300'>
-                    {
-                        posts.map((el) => {
-
-
-                            return (
-                                <li key={el.id} className='p-4 rounded-md '> 
-
-                                    <img src={el.media_url} width={500} height={500}/>
-
-
-                                    <h2>{el.caption}</h2>
-
-                                </li>
-                            )
-
-
-                        } )
-                    }
-                </ul>
-
-        </div>
-      )
-
+                <h2>{el.caption}</h2>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </div>
+  );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
