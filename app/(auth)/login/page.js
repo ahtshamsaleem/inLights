@@ -105,7 +105,9 @@ const Page = (props) => {
             // localStorage.setItem('expiryDate', expiryDate.toISOString());
             // setAutoLogout(remainingMilliseconds);
 
-            router.push(`/ig-posts`);
+            if (res.data.success) {
+                router.push(`/ig-posts`);
+            } 
 
 
             
