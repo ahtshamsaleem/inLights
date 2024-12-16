@@ -67,6 +67,7 @@ export default function InstaPosts() {
       return;
     }
 
+    
     const getAccessToken = (async () => {
       const res = await axios.get(`/api/instagram-exchange-token?code=${code}`);
 
