@@ -21,7 +21,7 @@ export async function middleware(request) {
 
 
 export const config = {
-  matcher: ["/ig-posts/:path*", "/"]
+  matcher: "/ig-posts/:path*"
 };
 
 
