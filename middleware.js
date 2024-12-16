@@ -4,6 +4,8 @@ import { jwtVerify } from "jose";
 export async function middleware(request) {
   const token = request.cookies.get("token");
 
+  console.log(token)
+
   if (!token) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
@@ -19,9 +21,8 @@ export async function middleware(request) {
 
 
 
-
 export const config = {
-  matcher: "/ig-posts/:path*"
+  matcher: ["/ig-posts/:path*", "/"]
 };
 
 
