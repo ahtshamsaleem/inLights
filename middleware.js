@@ -10,12 +10,27 @@ export async function middleware(request) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  const secret = new TextEncoder().encode(process.env.SECRET_JWT);
-  const isTokenValid = await jwtVerify(token.value, secret);
 
-  if (!isTokenValid) {
-    return NextResponse.redirect(new URL("/login", request.url));
+  try {
+    const secret = new TextEncoder().encode(process.env.SECRET_JWT);
+    const isTokenValid = await jwtVerify(token.value, secret);
+
+    if (!isTokenValid) {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
+
+
+  } catch (error) {
+      console.log(error)
   }
+
+
+
+
+
+
+
+
 }
 
 
